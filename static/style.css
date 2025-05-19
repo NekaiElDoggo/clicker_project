@@ -1,0 +1,125 @@
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    background: #f5f5f5;
+}
+.container {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    height: 100vh;
+    padding: 40px 10vw;
+    box-sizing: border-box;
+}
+.section {
+    background: #fff;
+    border-radius: 10px;
+    box-shadow: 0 2px 8px #0001;
+    padding: 24px;
+    min-width: 220px;
+    max-width: 320px;
+    flex: 1;
+    margin: 0 16px;
+}
+.center {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-width: 300px;
+    max-width: 400px;
+    flex: 1.2;
+}
+h1, h2 {
+    margin-top: 0;
+}
+button {
+    margin-top: 12px;
+    padding: 10px 24px;
+    font-size: 1.1em;
+    border-radius: 6px;
+    border: none;
+    background: #4caf50;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+button:hover {
+    background: #388e3c;
+}
+.reset-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 32px;
+    margin-bottom: 16px;
+}
+.reset-btn {
+    background: #e53935;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 12px 32px;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.reset-btn:hover {
+    background: #b71c1c;
+}
+.clicker-img {
+    width: 120px;
+    height: 120px;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: transform 0.1s;
+}
+.clicker-img:active {
+    transform: scale(0.95);
+}
+.darkmode-container {
+    position: absolute;
+    top: 24px;
+    right: 40px;
+}
+.darkmode-btn {
+    background: #222;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 44px;
+    height: 44px;
+    font-size: 1.5em;
+    cursor: pointer;
+    transition: background 0.2s;
+}
+.darkmode-btn:hover {
+    background: #444;
+}
+
+/* Mode sombre */
+body.darkmode {
+    background: #181a1b;
+}
+body.darkmode .section {
+    background: #23272a;
+    color: #eee;
+    box-shadow: 0 2px 8px #0006;
+}
+body.darkmode h1, body.darkmode h2 {
+    color: #fff;
+}
+body.darkmode button,
+body.darkmode .reset-btn,
+body.darkmode .darkmode-btn {
+    background: #333;
+    color: #fff;
+}
+body.darkmode button:hover,
+body.darkmode .reset-btn:hover,
+body.darkmode .darkmode-btn:hover {
+    background: #555;
+}
+body, .section {
+    transition: background 0.4s, color 0.4s;
+}

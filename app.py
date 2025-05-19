@@ -1,13 +1,11 @@
-from flask import Flask, Blueprint
-
-from controllers import main
+from flask import Flask, request, render_template
 
 app = Flask(__name__)
-app.register_blueprint(main)
-@app.route('/')
-def hello_world():  # put application's code here
-    return 'Hello World!'
 
+@app.route('/')
+def index():
+    score = int(request.cookies.get('score', 0))
+    return render_template('main.html', score=score)
 
 if __name__ == '__main__':
     app.run()

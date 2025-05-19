@@ -1,10 +1,32 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Clicker</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
-
+    <div class="darkmode-container">
+        <button class="darkmode-btn" onclick="toggleDarkMode()">🌙</button>
+    </div>
+    <div class="reset-container">
+        <button class="reset-btn" onclick="resetGame()">Reset</button>
+    </div>
+    <div class="container">
+        <div class="section">
+            <h2>BATIMENTS</h2>
+            <div id="buildings"></div>
+        </div>
+        <div class="section center">
+            <h1>Score : <span id="score">0</span></h1>
+            <img src="{{ url_for('static', filename='clicker.png') }}" alt="Clique !" class="clicker-img" onclick="increment()">
+            <div>(+<span id="multiplier">1</span>)</div>
+        </div>
+        <div class="section">
+            <h2>UPGRADE</h2>
+            <div id="upgrades"></div>
+        </div>
+    </div>
+    <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>
