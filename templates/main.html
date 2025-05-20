@@ -18,15 +18,27 @@
             <div id="buildings"></div>
         </div>
         <div class="section center">
-            <h1>Score : <span id="score">0</span></h1>
+            <div style="font-size:13px;color:#888;margin-bottom:2px;">
+                Total Mucus obtenus : <span id="totalScore">0</span>
+            </div>
+            <div>
+                Mucus : <span id="score">0</span>
+                | Multiplicateur : <span id="multiplier">1</span>
+            </div>
+            <div style="font-size:14px;color:#1976d2;margin-top:4px;">
+                Production totale : <span id="totalProd">0</span> /s
+            </div>
             <img src="{{ url_for('static', filename='clicker.png') }}" alt="Clique !" class="clicker-img" onclick="increment()">
-            <div>(+<span id="multiplier">1</span>)</div>
         </div>
         <div class="section">
             <h2>UPGRADE</h2>
             <div id="upgrades"></div>
         </div>
     </div>
+    <script>
+        const items = {{ items|safe }};
+        const clickUpgrades = {{ click_upgrades|safe }};
+    </script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
 </html>

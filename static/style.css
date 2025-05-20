@@ -1,125 +1,242 @@
+/* --- Base et structure --- */
 body {
     margin: 0;
     font-family: Arial, sans-serif;
-    background: #f5f5f5;
+    color: #222;
+    background: #fff;
+    transition: background 0.4s, color 0.4s;
+    font-size: 18px;
 }
 .container {
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: flex-start;
     height: 100vh;
-    padding: 40px 10vw;
+    padding: 24px 2vw;
     box-sizing: border-box;
+    gap: 24px;
 }
 .section {
-    background: #fff;
+    background: #f9f9f9;
     border-radius: 10px;
-    box-shadow: 0 2px 8px #0001;
-    padding: 24px;
-    min-width: 220px;
-    max-width: 320px;
+    box-shadow: 0 2px 12px #0001;
+    padding: 20px 14px;
+    min-width: 240px;
+    max-width: 340px;
     flex: 1;
-    margin: 0 16px;
+    color: #222;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    max-height: 80vh;
+    overflow-y: auto;
 }
 .center {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    min-width: 300px;
-    max-width: 400px;
+    min-width: 260px;
+    max-width: 380px;
     flex: 1.2;
 }
 h1, h2 {
     margin-top: 0;
+    color: #222;
+    font-size: 1.5em;
+    text-align: center;
 }
-button {
-    margin-top: 12px;
-    padding: 10px 24px;
-    font-size: 1.1em;
-    border-radius: 6px;
-    border: none;
-    background: #4caf50;
-    color: #fff;
+
+/* --- Boutons généraux --- */
+button, .building-btn, .upgrade-btn {
+    font-size: 1em;
+    padding: 10px 18px;
+    margin: 8px;
+    border-radius: 8px;
+    border: 2px solid #1976d2;
+    background: #e3f2fd;
+    color: #1976d2;
     cursor: pointer;
-    transition: background 0.2s;
+    position: relative;
+    min-width: 120px;
+    min-height: 40px;
+    transition: background 0.2s, color 0.2s, box-shadow 0.2s;
+    box-shadow: 0 2px 8px #1976d220;
+    font-weight: bold;
+    text-align: center;
+    display: inline-block;
 }
-button:hover {
-    background: #388e3c;
+button:hover, .building-btn:hover, .upgrade-btn:hover {
+    background: #bbdefb;
+    color: #0d47a1;
+    box-shadow: 0 4px 16px #1976d240;
 }
-.reset-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    margin-top: 32px;
-    margin-bottom: 16px;
+.upgrade-btn[disabled] {
+    opacity: 0.5;
+    cursor: not-allowed;
 }
+
+/* --- Boutons spéciaux --- */
 .reset-btn {
     background: #e53935;
     color: #fff;
     border: none;
     border-radius: 6px;
-    padding: 12px 32px;
-    font-size: 1.1em;
+    padding: 12px 24px;
+    font-size: 1em;
     cursor: pointer;
     transition: background 0.2s;
+    margin-top: 12px;
+    font-weight: bold;
 }
 .reset-btn:hover {
     background: #b71c1c;
-}
-.clicker-img {
-    width: 120px;
-    height: 120px;
-    cursor: pointer;
-    margin-top: 12px;
-    transition: transform 0.1s;
-}
-.clicker-img:active {
-    transform: scale(0.95);
-}
-.darkmode-container {
-    position: absolute;
-    top: 24px;
-    right: 40px;
 }
 .darkmode-btn {
     background: #222;
     color: #fff;
     border: none;
     border-radius: 50%;
-    width: 44px;
-    height: 44px;
-    font-size: 1.5em;
+    width: 38px;
+    height: 38px;
+    font-size: 1.2em;
     cursor: pointer;
     transition: background 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .darkmode-btn:hover {
     background: #444;
 }
+.reset-container {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    margin-top: 18px;
+    margin-bottom: 10px;
+}
+.darkmode-container {
+    position: absolute;
+    top: 20px;
+    right: 30px;
+}
 
-/* Mode sombre */
+/* --- Affichage des bâtiments et upgrades --- */
+.building-btn-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 6px;
+    width: 100%;
+    justify-content: center;
+}
+.building-cost, .upgrade-cost {
+    font-size: 1em;
+    color: #1976d2;
+}
+.building-count, .upgrade-level {
+    font-weight: bold;
+    font-size: 1.05em;
+}
+.building-prod {
+    font-size: 1em;
+    color: #388e3c;
+    min-width: 70px;
+    text-align: left;
+    font-weight: bold;
+}
+
+/* --- Image du clicker --- */
+.clicker-img {
+    width: 100px;
+    height: 100px;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    transition: transform 0.1s;
+    display: block;
+}
+.clicker-img:active {
+    transform: scale(0.95);
+}
+
+/* --- HUD central --- */
+#totalScore, #score, #multiplier, #totalProd {
+    font-size: 1em;
+    font-weight: bold;
+}
+.center > div {
+    text-align: center;
+    margin-bottom: 8px;
+}
+.center > div:first-child {
+    font-size: 0.95em;
+    color: #888;
+    margin-bottom: 4px;
+}
+.center > div:nth-child(3) {
+    font-size: 1em;
+    color: #1976d2;
+    margin-top: 6px;
+    margin-bottom: 12px;
+}
+
+/* --- Tooltip --- */
+#tooltip {
+    pointer-events: none;
+    position: fixed;
+    background: #222;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 6px;
+    font-size: 0.95em;
+    z-index: 1000;
+    display: none;
+    max-width: 220px;
+    word-break: break-word;
+}
+
+/* --- Mode sombre --- */
 body.darkmode {
     background: #181a1b;
+    color: #eee;
 }
 body.darkmode .section {
     background: #23272a;
     color: #eee;
-    box-shadow: 0 2px 8px #0006;
+    box-shadow: 0 2px 12px #0006;
 }
 body.darkmode h1, body.darkmode h2 {
     color: #fff;
 }
 body.darkmode button,
-body.darkmode .reset-btn,
-body.darkmode .darkmode-btn {
+body.darkmode .building-btn,
+body.darkmode .upgrade-btn {
     background: #333;
     color: #fff;
+    border: 2px solid #555;
 }
 body.darkmode button:hover,
+body.darkmode .building-btn:hover,
+body.darkmode .upgrade-btn:hover {
+    background: #444;
+    color: #fff;
+}
+body.darkmode .reset-btn,
+body.darkmode .darkmode-btn {
+    background: #444;
+    color: #fff;
+}
 body.darkmode .reset-btn:hover,
 body.darkmode .darkmode-btn:hover {
-    background: #555;
+    background: #666;
 }
-body, .section {
-    transition: background 0.4s, color 0.4s;
+body.darkmode .building-cost,
+body.darkmode .upgrade-cost {
+    color: #90caf9;
+}
+body.darkmode #tooltip {
+    background: #111;
+    color: #fff;
 }
