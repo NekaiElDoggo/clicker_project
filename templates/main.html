@@ -13,31 +13,37 @@
         <button class="reset-btn" onclick="resetGame()">Reset</button>
     </div>
     <div class="container">
-        <div class="section">
+        <div class="section section-gauche">
             <h2>BATIMENTS</h2>
             <div id="buildings"></div>
         </div>
-        <div class="section center">
-            <div style="font-size:13px;color:#888;margin-bottom:2px;">
-                Total Mucus obtenus : <span id="totalScore">0</span>
+        <div class="section section-centrale">
+            <div class="score-section">
+                <div style="font-size:13px;color:#888;margin-bottom:2px;">
+                    Total Mucus obtenus : <span id="totalScore">0</span>
+                </div>
+                <div>
+                    Mucus : <span id="score">0</span>
+                    | Multiplicateur : <span id="multiplier">1</span>
+                </div>
+                <div style="font-size:14px;color:#1976d2;margin-top:4px;">
+                    Production totale : <span id="totalProd">0</span> /s
+                </div>
             </div>
-            <div>
-                Mucus : <span id="score">0</span>
-                | Multiplicateur : <span id="multiplier">1</span>
+            <div class="clicker-img-wrapper">
+                <img src="{{ url_for('static', filename='clicker.png') }}" alt="Clique !" class="clicker-img" onclick="increment()">
             </div>
-            <div style="font-size:14px;color:#1976d2;margin-top:4px;">
-                Production totale : <span id="totalProd">0</span> /s
-            </div>
-            <img src="{{ url_for('static', filename='clicker.png') }}" alt="Clique !" class="clicker-img" onclick="increment()">
         </div>
-        <div class="section">
+        <div class="section section-droite">
             <h2>UPGRADE</h2>
             <div id="upgrades"></div>
         </div>
     </div>
+    <div class="achievements-section" id="achievements"></div>
     <script>
         const items = {{ items|safe }};
         const clickUpgrades = {{ click_upgrades|safe }};
+        const achievementsList = {{ achievements|safe }};
     </script>
     <script src="{{ url_for('static', filename='main.js') }}"></script>
 </body>
