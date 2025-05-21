@@ -3,7 +3,8 @@ import json
 
 app = Flask(__name__)
 
-@app.route('/')
+
+@app.route('/clicker')
 def index():
     click_upgrades = [
         {"level": 1, "cost": 100, "multiplier": 2, "condition": 0},
@@ -27,8 +28,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 150, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 1500, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 15000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 1500, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 15000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 150000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 1500000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -40,8 +43,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 1000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 10000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 100000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 10000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 100000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 1000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 10000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -53,8 +58,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 10000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 100000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 1000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 100000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 1000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 10000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 100000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -66,8 +73,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 100000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 1000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 10000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 1000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 10000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 100000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 1000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -79,8 +88,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 1000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 10000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 100000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 10000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 100000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 1000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 10000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -92,8 +103,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 10000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 100000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 1000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 100000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 1000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 10000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 100000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -105,8 +118,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 100000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 1000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 10000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 1000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 10000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 100000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 1000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -118,8 +133,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 1000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 10000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 100000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 10000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 100000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 1000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 10000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -131,8 +148,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 10000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 100000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 1000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 100000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 1000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 10000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 100000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -144,8 +163,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 100000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 1000000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 10000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 1000000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 10000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 100000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 1000000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -157,8 +178,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 1000000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 10000000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 100000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 10000000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 100000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 1000000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 10000000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -170,8 +193,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 10000000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 100000000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 1000000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 100000000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 1000000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 10000000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 100000000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -183,8 +208,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 100000000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 1000000000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 10000000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 1000000000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 10000000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 100000000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 1000000000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -196,8 +223,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 1000000000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 10000000000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 100000000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 10000000000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 100000000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 1000000000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 10000000000000000000, "multiplier": 4, "condition": 500}
             ]
         },
         {
@@ -209,8 +238,10 @@ def index():
             "count": 0,
             "upgrade": [
                 {"level": 1, "cost": 10000000000000000, "multiplier": 2, "condition": 10},
-                {"level": 2, "cost": 100000000000000000, "multiplier": 2, "condition": 50},
-                {"level": 3, "cost": 1000000000000000000, "multiplier": 2, "condition": 100}
+                {"level": 2, "cost": 100000000000000000, "multiplier": 2.5, "condition": 50},
+                {"level": 3, "cost": 1000000000000000000, "multiplier": 3, "condition": 100},
+                {"level": 4, "cost": 10000000000000000000, "multiplier": 3.5, "condition": 200},
+                {"level": 5, "cost": 100000000000000000000, "multiplier": 4, "condition": 500}
             ]
         }
     ]
@@ -265,6 +296,7 @@ def index():
                            items=json.dumps(items),
                            click_upgrades=json.dumps(click_upgrades),
                            achievements=json.dumps(achievements))
+
 
 if __name__ == '__main__':
     app.run()

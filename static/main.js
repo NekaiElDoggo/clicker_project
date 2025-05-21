@@ -45,11 +45,10 @@ function toggleMusic() {
     }
 }
 window.addEventListener('DOMContentLoaded', () => {
-    // Ajoute le bouton musique
     let btn = document.createElement('button');
     btn.id = 'music-btn';
     btn.className = 'darkmode-btn';
-    btn.style.left = '30px'; // Met à gauche
+    btn.style.left = '30px';
     btn.style.position = 'absolute';
     btn.style.top = '20px';
     btn.title = "Musique de fond";
@@ -89,6 +88,7 @@ let buildings = items.map((item, i) => ({
     baseCost: item.baseCost,
     growthRate: item.growthRate,
     baseProd: item.baseProd,
+    originalBaseProd: item.baseProd, // Pour reset le baseProd avant bonus
     count: 0,
     upgrades: item.upgrade.map((upg, j) => ({
         level: upg.level,
@@ -115,7 +115,7 @@ function saveClickUpgrade() {
 function loadBuildings() {
     buildings.forEach((b, i) => {
         b.count = parseInt(getCookie('building_' + i + '_count')) || 0;
-        b.baseProd = parseFloat(getCookie('building_' + i + '_baseProd')) || b.baseProd;
+        b.baseProd = parseFloat(getCookie('building_' + i + '_baseProd')) || b.originalBaseProd;
         b.upgrades.forEach((upg, j) => {
             upg.unlocked = getCookie('building_' + i + '_upgrade_' + j + '_unlocked') === '1';
         });
@@ -137,8 +137,24 @@ function calculerPrix(Price, growthRate, ownedCount) {
     return Math.floor(Price * Math.pow(growthRate, ownedCount));
 }
 
+// --- Application des bonus d'achievements ---
+function applyAchievementBonuses() {
+    // Reset baseProd à la valeur d'origine
+    buildings.forEach(b => {
+        b.baseProd = b.originalBaseProd;
+    });
+    // Pour chaque achievement débloqué, x2 la prod du slime concerné
+    achievements.forEach(a => {
+        if (a.unlocked) {
+            let b = buildings.find(b => b.name === a.type);
+            if (b) b.baseProd *= 2;
+        }
+    });
+}
+
 // --- Affichage des bâtiments ---
 function updateBuildingsDisplay() {
+    applyAchievementBonuses();
     let html = "";
     buildings.forEach((b, i) => {
         let prix = calculerPrix(b.baseCost, b.growthRate, b.count);
@@ -160,6 +176,7 @@ function updateBuildingsDisplay() {
 
 // --- Achat d'un bâtiment ---
 function buyBuilding(i) {
+    applyAchievementBonuses();
     let b = buildings[i];
     let prix = calculerPrix(b.baseCost, b.growthRate, b.count);
     if (score >= prix) {
@@ -167,12 +184,13 @@ function buyBuilding(i) {
         b.count += 1;
         buySound.currentTime = 0;
         buySound.play();
-        checkAchievements();
-        updateDisplay();
         updateBuildingsDisplay();
         updateUpgradeDisplay();
+        updateDisplay();
+        saveAll();
+        checkAchievements();
     } else {
-        alert("Pas assez de points !");
+        // Optionnel : feedback si pas assez de mucus
     }
 }
 
@@ -186,11 +204,9 @@ function upgradeClick() {
             multiplier *= upg.multiplier;
             buySound.currentTime = 0;
             buySound.play();
-            updateDisplay();
             updateUpgradeDisplay();
-            saveClickUpgrade();
-        } else {
-            alert("Pas assez de points !");
+            updateDisplay();
+            saveAll();
         }
     }
 }
@@ -201,54 +217,40 @@ function upgradeBuilding(i, j) {
     let upg = b.upgrades[j];
     if (score >= upg.cost && b.count >= upg.condition && !upg.unlocked) {
         score -= upg.cost;
-        b.baseProd *= upg.multiplier;
         upg.unlocked = true;
+        b.baseProd *= upg.multiplier;
         buySound.currentTime = 0;
         buySound.play();
-        updateDisplay();
         updateBuildingsDisplay();
         updateUpgradeDisplay();
-    } else {
-        alert("Condition non remplie ou pas assez de points !");
+        updateDisplay();
+        saveAll();
     }
 }
 
 // --- Affichage des upgrades ---
 function updateUpgradeDisplay() {
-    // Upgrades de clic
     let html = `<h3>Améliorations du clic</h3>`;
     if (clickUpgradeLevel < clickUpgrades.length) {
         let upg = clickUpgrades[clickUpgradeLevel];
-        html += `
-        <div class="upgrade-btn-wrapper">
-            <button class="upgrade-btn"
-                onmouseover="showTooltip(event, 'Niveau ${upg.level}<br>x${upg.multiplier} par clic<br>Coût: ${formatNumber(upg.cost)}')"
-                onmouseout="hideTooltip()"
-                onclick="upgradeClick()">
-                Clic <span class="upgrade-level">${clickUpgradeLevel + 1}</span>
-                <br><span class="upgrade-cost">${formatNumber(upg.cost)}</span>
-            </button>
-        </div>`;
+        html += `<button class="upgrade-btn" onclick="upgradeClick()">
+            Niveau ${upg.level} : x${upg.multiplier} (Coût : <span class="upgrade-cost">${formatNumber(upg.cost)}</span>)
+        </button>`;
     } else {
-        html += `<i>Toutes les améliorations de clic achetées</i>`;
+        html += `<span style="color:#888;">Toutes les améliorations de clic sont achetées.</span>`;
     }
     html += `<hr><h3>Améliorations de bâtiments</h3>`;
     buildings.forEach((b, i) => {
         const upgIndex = b.upgrades.findIndex(upg => !upg.unlocked);
         html += `<div class="upgrade-btn-wrapper">`;
         if (upgIndex !== -1) {
-            const upg = b.upgrades[upgIndex];
-            html += `
-            <button class="upgrade-btn"
-                onmouseover="showTooltip(event, '${b.name}<br>Niveau ${upg.level}<br>Production x${upg.multiplier}<br>Condition: ${formatNumber(upg.condition)} possédés<br>Coût: ${formatNumber(upg.cost)}')"
-                onmouseout="hideTooltip()"
-                onclick="upgradeBuilding(${i},${upgIndex})"
-                ${b.count >= upg.condition ? '' : 'disabled'}>
-                ${b.name} Upg <span class="upgrade-level">${upg.level}</span>
-                <br><span class="upgrade-cost">${formatNumber(upg.cost)}</span>
+            let upg = b.upgrades[upgIndex];
+            html += `<button class="upgrade-btn" onclick="upgradeBuilding(${i},${upgIndex})"
+                ${score < upg.cost || b.count < upg.condition ? "disabled" : ""}>
+                ${b.name} - Niveau ${upg.level} : x${upg.multiplier} (Coût : <span class="upgrade-cost">${formatNumber(upg.cost)}</span>, Nécessite ${upg.condition} possédés)
             </button>`;
         } else {
-            html += `<i>Toutes les améliorations achetées</i>`;
+            html += `<span style="color:#888;">Toutes les améliorations achetées.</span>`;
         }
         html += `</div>`;
     });
@@ -282,6 +284,7 @@ function hideTooltip() {
 
 // --- Affichage général ---
 function updateDisplay() {
+    applyAchievementBonuses();
     const scoreEl = document.getElementById('score');
     const multiplierEl = document.getElementById('multiplier');
     const totalScoreEl = document.getElementById('totalScore');
@@ -294,12 +297,12 @@ function updateDisplay() {
 
 // --- Calcul de la prod totale ---
 function getTotalProd() {
+    applyAchievementBonuses();
     let prod = 0;
     buildings.forEach(b => {
         prod += b.count * b.baseProd;
     });
-    // Ajoute +1 par achievement débloqué
-    prod += achievements.filter(a => a.unlocked).length;
+    // On ne donne plus +1 par achievement, le bonus est maintenant x2 sur le slime concerné
     return prod;
 }
 
@@ -341,7 +344,7 @@ window.onload = function() {
     setBackgroundMusicSource(isDark);
     backgroundMusic.play().catch(() => {
         const startMusic = () => {
-            backgroundMusic.play();
+            backgroundMusic.play().catch(() => {});
             document.removeEventListener('click', startMusic);
         };
         document.addEventListener('click', startMusic);
@@ -370,7 +373,7 @@ function resetGame() {
     ];
     buildings.forEach((b, i) => {
         b.upgrades.forEach((upg, j) => {
-            cookies.push('building_' + i + '_upgrade_' + j + '_unlocked');
+            setCookie('building_' + i + '_upgrade_' + j + '_unlocked', '', -1);
         });
     });
     cookies.forEach(name => setCookie(name, '', -1));
@@ -381,19 +384,23 @@ function resetGame() {
 // --- Affichage des succès ---
 function checkAchievements() {
     let changed = false;
-    achievements.forEach((a, idx) => {
-        if (!a.unlocked) {
-            // Trouve le bon bâtiment
-            let b = buildings.find(b => b.name === a.type);
-            if (b && b.count >= a.condition) {
+    buildings.forEach((b, bIdx) => {
+        let count = b.count;
+        achievements.forEach((a, idx) => {
+            if (!a.unlocked && a.type === b.name && count >= a.condition) {
                 a.unlocked = true;
-                changed = true;
+                setCookie('achievement_' + idx, '1', 365);
                 successSound.currentTime = 0;
                 successSound.play();
+                changed = true;
             }
-        }
+        });
     });
-    if (changed) updateAchievementsDisplay();
+    if (changed) {
+        updateAchievementsDisplay();
+        updateBuildingsDisplay();
+        updateDisplay();
+    }
 }
 
 function updateAchievementsDisplay() {
@@ -401,10 +408,7 @@ function updateAchievementsDisplay() {
     <div style="display:flex;flex-direction:row;flex-wrap:nowrap;gap:10px;overflow-x:auto;overflow-y:hidden;width:100%;">`;
     achievements.forEach(a => {
         html += `<div class="achievement${a.unlocked ? ' unlocked' : ''}">
-            ${a.name}<br>
-            <span style="font-size:0.9em;">(${formatNumber(a.condition)} ${a.type})</span>
-            <br>
-            ${a.unlocked ? '<span style="color:#388e3c;">Débloqué</span>' : '<span style="color:#bdbdbd;">Non débloqué</span>'}
+            ${a.name}<br><span style="font-size:0.9em;">(${a.type} ×2 prod)</span>
         </div>`;
     });
     html += `</div>`;
@@ -420,8 +424,18 @@ function toggleDarkMode() {
 
 // --- Formatage des nombres ---
 function formatNumber(n) {
+    if (n >= 1e60) return Math.floor(n / 1e60) + "X" + (Math.floor((n % 1e60) / 1e57) || "");
+    if (n >= 1e57) return Math.floor(n / 1e57) + "Ss" + (Math.floor((n % 1e57) / 1e54) || "");
+    if (n >= 1e54) return Math.floor(n / 1e54) + "S" + (Math.floor((n % 1e54) / 1e51) || "");
+    if (n >= 1e51) return Math.floor(n / 1e51) + "Oo" + (Math.floor((n % 1e51) / 1e48) || "");
+    if (n >= 1e48) return Math.floor(n / 1e48) + "O" + (Math.floor((n % 1e48) / 1e45) || "");
+    if (n >= 1e45) return Math.floor(n / 1e45) + "Na" + (Math.floor((n % 1e45) / 1e42) || "");
+    if (n >= 1e42) return Math.floor(n / 1e42) + "N" + (Math.floor((n % 1e42) / 1e39) || "");
+    if (n >= 1e39) return Math.floor(n / 1e39) + "Dd" + (Math.floor((n % 1e39) / 1e36) || "");
+    if (n >= 1e36) return Math.floor(n / 1e36) + "D" + (Math.floor((n % 1e36) / 1e33) || "");
+    if (n >= 1e33) return Math.floor(n / 1e33) + "Cc" + (Math.floor((n % 1e33) / 1e30) || "");
     if (n >= 1e30) return Math.floor(n / 1e30) + "C" + (Math.floor((n % 1e30) / 1e27) || "");
-    if (n >= 1e27) return Math.floor(n / 1e27) + "Qa" + (Math.floor((n % 1e27) / 1e24) || "");
+    if (n >= 1e27) return Math.floor(n / 1e27) + "Qq" + (Math.floor((n % 1e27) / 1e24) || "");
     if (n >= 1e24) return Math.floor(n / 1e24) + "Q" + (Math.floor((n % 1e24) / 1e21) || "");
     if (n >= 1e21) return Math.floor(n / 1e21) + "Z" + (Math.floor((n % 1e21) / 1e18) || "");
     if (n >= 1e18) return Math.floor(n / 1e18) + "E" + (Math.floor((n % 1e18) / 1e15) || "");
