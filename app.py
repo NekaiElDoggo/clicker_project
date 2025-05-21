@@ -4,7 +4,7 @@ import json
 app = Flask(__name__)
 
 
-@app.route('/clicker')
+@app.route('/')
 def index():
     click_upgrades = [
         {"level": 1, "cost": 100, "multiplier": 2, "condition": 0},
